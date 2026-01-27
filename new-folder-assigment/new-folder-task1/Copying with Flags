@@ -1,0 +1,14 @@
+const fs = require("fs");
+
+fs.copyFile(
+  "source.txt",
+  "dest.txt",
+  fs.constants.COPYFILE_EXCL,
+  (err) => {
+    if (err) {
+      console.log("Destination file already exists");
+      return;
+    }
+    console.log("File copied");
+  }
+);
