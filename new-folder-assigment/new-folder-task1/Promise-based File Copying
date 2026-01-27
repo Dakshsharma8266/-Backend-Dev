@@ -1,0 +1,12 @@
+const fsPromises = require("fs").promises;
+
+async function copyFileAsync() {
+  try {
+    await fsPromises.copyFile("source.txt", "destination.txt");
+    console.log("File copied successfully");
+  } catch (err) {
+    console.error("Error copying file:", err);
+  }
+}
+
+copyFileAsync();
