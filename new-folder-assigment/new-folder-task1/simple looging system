@@ -1,0 +1,15 @@
+const fs = require("fs");
+
+function logMessage(message) {
+  const log = `${new Date().toISOString()} | ${message}\n`;
+
+  fs.appendFile("app.log", log, (err) => {
+    if (err) {
+      console.error("Error writing log:", err);
+    }
+  });
+}
+
+// Example usage
+logMessage("Server started");
+logMessage("User logged in");
