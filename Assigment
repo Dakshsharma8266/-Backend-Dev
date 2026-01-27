@@ -1,0 +1,116 @@
+//1)File operations
+const fs = require("fs");
+
+fs.readFile("input.txt", "utf8", (err, data) => {
+  if (err) {
+    console.error(err);
+    return;
+  }
+
+  const words = data.trim().split(/\s+/).length;
+
+  fs.writeFile("output.txt", `Word Count: ${words}`, (err) => {
+    if (err) {
+      console.error(err);
+      return;
+    }
+    console.log("Word count written to output.txt");
+  });
+});
+
+2)Custom Module
+function capitalize(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+function reverse(str) {
+  return str.split("").reverse().join("");
+}
+
+function countVowels(str) {
+  return (str.match(/[aeiou]/gi) || []).length;
+}
+
+module.exports = {
+  capitalize,
+  reverse,
+  countVowels
+};
+
+3)System information logger
+
+const os = require("os");
+const fs = require("fs");
+
+setInterval(() => {
+  const info = `
+CPU: ${os.cpus()[0].model}
+Memory: ${(os.totalmem() / 1024 / 1024).toFixed(2)} MB
+Platform: ${os.platform()}
+Time: ${new Date().toLocaleString()}
+-------------------------
+`;
+
+  fs.appendFile("system.log", info, (err) => {
+    if (err) console.error(err);
+  });
+}, 5000);
+
+4) Simple TODO API
+const express = require("express");
+const app = express();
+
+app.use(express.json());
+
+let todos = [];
+
+// CREATE
+app.post("/todos", (req, res) => {
+  todos.push(req.body);
+  res.send(todos);
+});
+
+// READ
+app.get("/todos", (req, res) => {
+  res.send(todos);
+});
+
+// UPDATE
+app.put("/todos/:index", (req, res) => {
+  todos[req.params.index] = req.body;
+  res.send(todos);
+});
+
+// DELETE
+app.delete("/todos/:index", (req, res) => {
+  todos.splice(req.params.index, 1);
+  res.send(todos);
+});
+
+app.listen(3000, () => {
+  console.log("TODO API running on port 3000");
+});
+
+5)Event Loop Order
+
+console.log("Start");
+
+setTimeout(() => {
+  console.log("setTimeout");
+}, 0);
+
+setImmediate(() => {
+  console.log("setImmediate");
+});
+
+process.nextTick(() => {
+  console.log("process.nextTick");
+});
+
+Promise.resolve().then(() => {
+  console.log("Promise");
+});
+
+console.log("End");
+
+
